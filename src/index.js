@@ -10,12 +10,26 @@ import express  from "express";
 ---> Second way to make connection, also have to make changes in package.json in scripts:{"dev":"nodemon -r dotenv/config --experimental-json-modules src/index.js"}
 */
 
+import { app } from "./app.js";
 import connectDB from "./db/index.js";
 import dotenv from 'dotenv';
 dotenv.config({
     path:'./.env',
 })
 connectDB()
+.then(()=>{
+    app.listen(process.env.PORT || 8000,()=>{
+        console.log("You are listening")
+    })
+    app.on("error",(error)=>{
+        console.log("This is error part of the application");
+    })
+})
+.catch(
+    (err)=>{
+        console.log("Connection failed",error);
+    }
+)
 
 
 
